@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-ops"
+version = "0.1.0"
+description = "Common AI-Native Operations toolkit for infrastructure automation and ML insights."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Karthikeya Raja M" }]
+dependencies = [
+    "typer>=0.9.0",      # For the CLI interface
+    "pandas>=2.0.0",     # For data processing
+    "scikit-learn>=1.3.0", # For #1 Anomaly Detection
+    "prophet>=1.1.0",    # For #2 Predictive Forecasting
+    "networkx>=3.0",     # For #3 Root Cause Analysis
+    "boto3>=1.28.0",     # For AWS/Infrastructure actions
+    "rich>=13.0.0"       # For professional terminal output
+]
+
+[project.scripts]
+aiops = "ai_ops.main:app"
