@@ -1,0 +1,37 @@
+name: Code Quality Check
+
+on:
+  pull_request:
+    paths:
+      - '**.py'
+  workflow_dispatch:
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install black isort flake8 mypy
+        pip install -e .
+
+    - name: Run black
+      run: black --check ai_ops
+
+    - name: Run isort  
+      run: isort --check-only ai_ops
+
+    - name: Run flake8
+      run: flake8 ai_ops
+
+    - name: Run mypy (type checking)
+      run: mypy ai_ops --ignore-missing-imports
+      continue-on-error: true

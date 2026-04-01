@@ -1,0 +1,148 @@
+name: Build and Test AI-OPS
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('project.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build pytest pytest-cov flake8 black isort
+        pip install -e .
+
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 ai_ops --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 ai_ops --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Check code formatting with black
+      run: |
+        black --check ai_ops --diff --color
+
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only ai_ops --diff --color
+
+    - name: Validate package metadata
+      run: |
+        python -c "import ai_ops; print('Package imported successfully')"
+        
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Test CLI installation (when main.py exists)
+      run: |
+        if [ -f "ai_ops/main.py" ]; then
+          aiops --help || echo "CLI not ready yet - main.py needs implementation"
+        else
+          echo "main.py not found - CLI entry point needs to be created"
+        fi
+      continue-on-error: true
+
+    - name: Run tests
+      run: |
+        if [ -d "tests" ] && [ "$(find tests -name '*.py' -type f | wc -l)" -gt 0 ]; then
+          pytest tests/ --cov=ai_ops --cov-report=xml --cov-report=term-missing
+        else
+          echo "No test files found - tests need to be implemented"
+        fi
+      continue-on-error: true
+
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.11'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install safety
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
+        pip install -e .
+        
+    - name: Run safety check
+      run: |
+        safety check --json || true
+        
+    - name: Run bandit security scan
+      run: |
+        bandit -r ai_ops -f json || true
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Create Dockerfile (if not exists)
+      run: |
+        if [ ! -f "Dockerfile" ]; then
+          cat > Dockerfile << 'EOF'
+        FROM python:3.11-slim
+
+        WORKDIR /app
+
+        # Copy project files
+        COPY project.toml README.md ./
+        COPY ai_ops/ ./ai_ops/
+
+        # Install the package
+        RUN pip install --no-cache-dir -e .
+
+        # Set the CLI as entrypoint when main.py is ready
+        # ENTRYPOINT ["aiops"]
+        CMD ["python", "-c", "import ai_ops; print('AI-OPS package ready')"]
+        EOF
+        fi
+    
+    - name: Build Docker image
+      run: |
+        docker build -t ai-ops:test .
+        
+    - name: Test Docker image
+      run: |
+        docker run --rm ai-ops:test
