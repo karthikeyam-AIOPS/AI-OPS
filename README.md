@@ -38,6 +38,26 @@ Clone the repository:
 	   
      aiops --help```
 
+## 📚 Examples & Demos
+
+The `examples/` directory contains practical demonstrations of AI-OPS capabilities:
+
+- **Anomaly Detection**: Log analysis using ML for incident detection
+- **Performance Prediction**: Multi-class classification examples  
+- **Sentiment Analysis**: System health monitoring through log sentiment
+
+Run all examples:
+```bash
+python examples/run_all_examples.py
+```
+
+Or install with example dependencies:
+```bash
+pip install -e ".[examples]"
+```
+
+See [examples/README.md](examples/README.md) for detailed documentation.
+
 ## 🤝 Contributing
 
 1. Create a feature branch: git checkout -b feature/your-feature-name

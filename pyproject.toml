@@ -19,6 +19,19 @@ dependencies = [
     "rich>=13.0.0"       # For professional terminal output
 ]
 
+[project.optional-dependencies]
+examples = [
+    "matplotlib>=3.5.0",  # For visualization in examples
+    "textblob>=0.17.0"    # For sentiment analysis demo
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0"
+]
+
 [project.scripts]
 aiops = "ai_ops.main:app"
 
