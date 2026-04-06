@@ -130,6 +130,9 @@ jobs:
         COPY project.toml README.md ./
         COPY ai_ops/ ./ai_ops/
 
+        # Rename project.toml to pyproject.toml for pip compatibility
+        RUN mv project.toml pyproject.toml
+
         # Install the package
         RUN pip install --no-cache-dir -e .
 
