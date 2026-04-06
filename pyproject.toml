@@ -22,6 +22,12 @@ dependencies = [
 [project.scripts]
 aiops = "ai_ops.main:app"
 
+[tool.setuptools]
+packages = ["ai_ops"]
+
+[tool.setuptools.package-dir]
+"" = "."
+
 [tool.black]
 line-length = 88
 target-version = ['py39', 'py310', 'py311']
