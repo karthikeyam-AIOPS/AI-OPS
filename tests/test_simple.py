@@ -2,6 +2,7 @@
 Very simple test to make sure the basic setup works.
 """
 
+
 def test_python_basics():
     """Test that Python basics work."""
     assert 2 + 2 == 4
@@ -13,6 +14,7 @@ def test_imports():
     """Test that we can do basic imports."""
     import sys
     import os
+    
     assert sys is not None
     assert os is not None
 
