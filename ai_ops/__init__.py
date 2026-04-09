@@ -37,4 +37,3 @@ try:
 except ImportError:
     # CLI dependencies not available
     pass
-__all__ = ["__version__", "__author__", "__description__"]
