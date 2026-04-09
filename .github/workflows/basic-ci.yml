@@ -30,6 +30,12 @@ jobs:
     - name: Check code formatting with Black
       run: black --check --diff .
 
+    - name: Install pytest
+      run: pip install pytest
+
+    - name: Run tests
+      run: pytest tests/test_simple.py -v
+
     - name: Run basic validation
       run: |
         python -c "
