@@ -13,14 +13,34 @@ dependencies = [
     "typer>=0.9.0",      # For the CLI interface
     "pandas>=2.0.0",     # For data processing
     "scikit-learn>=1.3.0", # For #1 Anomaly Detection
+    "joblib>=1.3.0",     # For model persistence and serialization
     "prophet>=1.1.0",    # For #2 Predictive Forecasting
     "networkx>=3.0",     # For #3 Root Cause Analysis
     "boto3>=1.28.0",     # For AWS/Infrastructure actions
     "rich>=13.0.0"       # For professional terminal output
 ]
 
+[project.optional-dependencies]
+examples = [
+    "matplotlib>=3.5.0",  # For visualization in examples
+    "textblob>=0.17.0"    # For sentiment analysis demo
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0"
+]
+
 [project.scripts]
 aiops = "ai_ops.main:app"
+
+[tool.setuptools]
+packages = ["ai_ops"]
+
+[tool.setuptools.package-dir]
+"" = "."
 
 [tool.black]
 line-length = 88

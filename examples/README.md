@@ -66,6 +66,54 @@ Result: ⚠️ ANOMALY (Anomaly probability: 87.3%)
 
 **Requirements**: `pip install textblob`
 
+### 4. Capacity Forecasting Demo (`../Forecasting/capacity_forecasting_demo.py`)
+
+**Purpose**: Demonstrates predictive capacity planning using linear regression for resource usage forecasting.
+
+**Key Features**:
+- Historical usage data simulation
+- Linear regression model training and prediction
+- Model persistence with joblib
+- Time-series forecasting with date-based predictions
+- Model metadata capture and analysis
+- Capacity inference class for production-ready predictions
+
+**Use Cases**:
+- Storage capacity planning
+- CPU/Memory usage forecasting
+- Infrastructure scaling decisions
+- Budget planning for resource expansion
+- Proactive capacity management
+
+**Models Demonstrated**:
+- **Time Series Forecasting**: Linear Regression for capacity growth prediction
+- **Model Persistence**: Save/load trained models for production use
+- **Date-based Predictions**: Real-world date interface for forecasting
+
+**Example Output**:
+```
+Capacity Forecast Results:
+==================================================
+   Day  GB_Used      Type
+    26   139.23    Actual
+    27   140.85    Actual
+    28   142.41    Actual
+    29   143.97    Actual
+    30   145.53    Actual
+    31   147.09  Forecast
+    32   148.65  Forecast
+    ...
+
+Model Captured:
+- Growth Rate: 1.50 GB per day
+- Starting Point: 100.25 GB
+- Accuracy Score (R2): 0.9847
+
+Forecast for June 1st, 2026: 254.12 GB
+```
+
+**Requirements**: `pip install scikit-learn joblib pandas numpy`
+
 ## 🚀 Running the Examples
 
 ### Run Individual Examples
@@ -78,6 +126,9 @@ python examples/student_prediction_demo.py
 
 # Sentiment analysis
 python examples/sentiment_analysis_demo.py
+
+# Capacity forecasting
+python Forecasting/capacity_forecasting_demo.py
 ```
 
 ### Run All Examples
