@@ -34,6 +34,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e ".[dev]"
+        # Verify allure-pytest is installed
+        python -c "import allure_pytest; print('✅ Allure plugin available')" || echo "⚠️  Allure plugin not available"
 
     - name: Install Allure CLI
       run: |
@@ -45,13 +47,22 @@ jobs:
 
     - name: Run tests with coverage and Allure
       run: |
-        pytest --cov=ai_ops --cov-report=xml --cov-report=html --alluredir=allure-results --junitxml=test-results.xml
+        echo "🧪 Running tests with adaptive configuration..."
+        python scripts/run_tests.py
       continue-on-error: true
 
     - name: Generate Allure Report
       if: always()
       run: |
-        allure generate allure-results --clean --output allure-report
+        if [ -d "allure-results" ] && [ "$(ls -A allure-results 2>/dev/null)" ]; then
+          echo "📊 Generating Allure HTML report..."
+          allure generate allure-results --clean --output allure-report
+        else
+          echo "⚠️  No Allure results found, skipping HTML report generation"
+          # Create empty report directory to prevent upload failures
+          mkdir -p allure-report
+          echo "<h1>No Allure Results</h1><p>Tests ran without Allure reporting.</p>" > allure-report/index.html
+        fi
 
     - name: Upload Allure Results
       if: always()

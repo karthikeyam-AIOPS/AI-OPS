@@ -4,6 +4,28 @@ Utility scripts for managing AI-OPS development, testing, and reporting.
 
 ## 📜 Available Scripts
 
+### [run_tests.py](run_tests.py)
+
+**Purpose**: Smart pytest runner that adapts to available plugins and dependencies.
+
+**Features**:
+- 🔍 **Plugin Detection**: Automatically detects available pytest plugins
+- 🛡️ **Graceful Degradation**: Works even with missing optional dependencies
+- 📊 **Adaptive Reporting**: Enables Allure, coverage, HTML reports when available
+- 🚦 **Robust Execution**: Handles missing plugins without errors
+
+**Usage**:
+```bash
+# Run tests with optimal configuration
+python scripts/run_tests.py
+```
+
+**Detected Plugins**:
+- `pytest-cov` → Coverage reporting enabled
+- `allure-pytest` → Allure reporting enabled  
+- `pytest-html` → HTML report generated
+- Missing plugins are gracefully skipped
+
 ### [generate_reports.py](generate_reports.py)
 
 **Purpose**: Generate comprehensive quality and test reports including SonarQube analysis and Allure test reports.

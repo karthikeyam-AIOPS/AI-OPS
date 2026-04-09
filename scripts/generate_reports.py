@@ -67,22 +67,41 @@ def run_tests_with_allure():
     # Install dependencies
     run_command("pip install -e \".[dev]\"", "Installing development dependencies")
     
-    # Run tests with coverage and Allure
-    success = run_command(
-        "pytest --cov=ai_ops --cov-report=xml --cov-report=html --alluredir=allure-results --junitxml=test-results.xml",
-        "Running tests with coverage and Allure"
-    )
+    # Check if allure-pytest is available
+    try:
+        import allure_pytest
+        allure_available = True
+        print("✅ Allure plugin detected")
+    except ImportError:
+        allure_available = False
+        print("⚠️  Allure plugin not available, running tests without Allure")
     
-    if success and shutil.which("allure"):
-        # Generate Allure report
-        run_command(
-            "allure generate allure-results --clean --output allure-report",
-            "Generating Allure HTML report"
+    # Run tests with or without Allure
+    if allure_available:
+        success = run_command(
+            "pytest --cov=ai_ops --cov-report=xml --cov-report=html --alluredir=allure-results --junitxml=test-results.xml",
+            "Running tests with coverage and Allure"
         )
-        print("📊 Allure report generated at: allure-report/index.html")
     else:
-        print("⚠️  Allure CLI not found. Install it to generate HTML reports.")
-        print("   Install: https://docs.qameta.io/allure/#_installing_a_commandline")
+        success = run_command(
+            "pytest --cov=ai_ops --cov-report=xml --cov-report=html --junitxml=test-results.xml",
+            "Running tests with coverage (no Allure)"
+        )
+    
+    # Generate Allure report if results exist and CLI is available
+    if success and allure_available and os.path.exists("allure-results"):
+        if shutil.which("allure"):
+            # Generate Allure report
+            run_command(
+                "allure generate allure-results --clean --output allure-report",
+                "Generating Allure HTML report"
+            )
+            print("📊 Allure report generated at: allure-report/index.html")
+        else:
+            print("⚠️  Allure CLI not found. Install it to generate HTML reports.")
+            print("   Install: https://docs.qameta.io/allure/#_installing_a_commandline")
+    else:
+        print("📊 Tests completed. Coverage report available at: htmlcov/index.html")
 
 
 def run_sonar_scan():

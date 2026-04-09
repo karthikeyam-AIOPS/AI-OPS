@@ -18,30 +18,29 @@ This directory contains the test suite for the AI-OPS toolkit with comprehensive
 
 ### Quick Test Run
 ```bash
-# Run all tests
-pytest
+# Smart test runner (adapts to available plugins)
+python scripts/run_tests.py
 
-# Run with coverage
-pytest --cov=ai_ops
-
-# Run specific test marks
-pytest -m unit
-pytest -m "smoke or integration"
+# Manual pytest commands
+pytest                           # Basic test run
+pytest --cov=ai_ops             # With coverage
+pytest -m unit                  # Run specific test marks
+pytest -m "smoke or integration" # Multiple marks
 ```
 
-### With Allure Reports
+### With Allure Reports (if plugin available)
 ```bash
 # Run tests and generate Allure results
 pytest --alluredir=allure-results
 
-# Generate and view HTML report
+# Generate and view HTML report (requires Allure CLI)
 allure generate allure-results --clean --output allure-report
 allure serve allure-results  # Opens browser automatically
 ```
 
 ### Using the Report Generator Script
 ```bash
-# Generate all reports (tests + quality)
+# Generate all reports (tests + quality) - handles missing dependencies
 python scripts/generate_reports.py --allure
 
 # Serve reports locally
