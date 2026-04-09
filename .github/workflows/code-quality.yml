@@ -1,12 +1,17 @@
-name: Code Quality Check
+name: Code Quality (DISABLED)
+
+# DISABLED - This workflow is temporarily disabled  
+# Use basic-ci.yml for now
 
 on:
-  pull_request:
-    paths:
-      - '**.py'
-  push:
-    branches: [ main, develop ]
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger only
+
+# on:
+#   pull_request:
+#     paths:
+#       - '**.py'
+#   push:
+#     branches: [ main, develop ]
 
 jobs:
   code-quality:

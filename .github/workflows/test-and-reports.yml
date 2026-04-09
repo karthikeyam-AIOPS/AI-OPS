@@ -1,14 +1,16 @@
-name: Tests and Reports (Advanced)
+name: Tests and Reports (DISABLED)
 
-# Temporarily disabled - use basic-ci.yml instead
+# DISABLED - This workflow is temporarily disabled due to complexity issues
+# Use basic-ci.yml for now
+
 on:
   workflow_dispatch:  # Manual trigger only
   
-# Uncomment when ready for advanced reporting:
-#  push:
-#    branches: [ main, develop ]  
-#  pull_request:
-#    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main, develop ]  
+#   pull_request:
+#     branches: [ main ]
 
 jobs:
   test-and-report:
