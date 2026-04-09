@@ -133,7 +133,7 @@ Add these to your README.md to show build status:
 
 ## 🔧 Configuration Files
 
-The following configuration has been added to your `project.toml`:
+The following configuration has been added to your `pyproject.toml`:
 
 - **Black**: Code formatting (88 char line length)
 - **isort**: Import sorting (compatible with Black)
@@ -161,12 +161,12 @@ docker run --rm ai-ops
 ## 🔍 Troubleshooting
 
 **Workflow fails on missing dependencies:**
-- Check that all dependencies in `project.toml` are correctly specified
+- Check that all dependencies in `pyproject.toml` are correctly specified
 - Ensure Python version compatibility
 
 **CLI tests fail:**
 - Make sure `ai_ops/main.py` exists with proper Typer setup
-- Verify the entry point in `project.toml` is correct
+- Verify the entry point in `pyproject.toml` is correct
 
 **Security scans report issues:**
 - Review the safety and bandit reports
