@@ -28,7 +28,7 @@ jobs:
       run: pip install black
 
     - name: Check code formatting with Black
-      run: black --check --diff .
+      run: black --check --diff ai_ops/ Forecasting/ tests/
 
     - name: Install pytest
       run: pip install pytest

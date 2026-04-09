@@ -14,7 +14,7 @@ def test_imports():
     """Test that we can do basic imports."""
     import sys
     import os
-    
+
     assert sys is not None
     assert os is not None
 
@@ -22,4 +22,4 @@ def test_imports():
 if __name__ == "__main__":
     test_python_basics()
     test_imports()
-    print("✅ All basic tests passed!")
+    print("All basic tests passed!")

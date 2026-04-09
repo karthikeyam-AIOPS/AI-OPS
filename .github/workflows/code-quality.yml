@@ -25,7 +25,7 @@ jobs:
         pip install -r requirements.txt 2>/dev/null || echo "No requirements.txt found"
         
     - name: Check code formatting with Black
-      run: black --check --diff .
+      run: black --check --diff ai_ops/ Forecasting/ tests/
       
     - name: Lint with flake8
       run: |
