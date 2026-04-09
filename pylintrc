@@ -1,0 +1,29 @@
+[MASTER]
+init-hook='import sys; sys.path.append(".")'
+
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-locals,
+    line-too-long,
+    import-error,
+    no-name-in-module,
+    C0103, # Invalid name
+    R0913, # Too many arguments
+    R0914, # Too many local variables
+
+[FORMAT]
+max-line-length=88
+
+[DESIGN]
+max-parents=10
+max-attributes=15
+min-public-methods=1
+max-public-methods=25
+max-returns=10
+max-branches=15
+max-statements=60

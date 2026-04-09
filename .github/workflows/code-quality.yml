@@ -1,14 +1,55 @@
-name: Code Quality (DISABLED)
-
-# DISABLED - This workflow is temporarily disabled  
-# Use basic-ci.yml for now
+name: Code Quality
 
 on:
-  workflow_dispatch:  # Manual trigger only
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  placeholder:
+  code-quality:
     runs-on: ubuntu-latest
+    
     steps:
-    - name: Placeholder
-      run: echo "Code quality checks are disabled"
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black flake8 pylint safety bandit[toml]
+        pip install -r requirements.txt 2>/dev/null || echo "No requirements.txt found"
+        
+    - name: Check code formatting with Black
+      run: black --check --diff .
+      
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings (using .flake8 config)
+        flake8 . --count --exit-zero --statistics
+        
+    - name: Analyze with pylint
+      run: |
+        pylint ai_ops/ --rcfile=pylintrc --exit-zero --reports=no --score=yes
+        
+    - name: Security check with safety
+      run: |
+        safety check --ignore 70612 || echo "Safety check completed with warnings"
+        
+    - name: Security check with bandit
+      run: |
+        bandit -r ai_ops/ -f json -o bandit-report.json || echo "Bandit completed"
+        
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
