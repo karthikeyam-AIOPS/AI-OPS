@@ -38,7 +38,7 @@ packages = ["ai_ops"]
 
 [tool.black]
 line-length = 88
-target-version = ['py39', 'py310', 'py311']
+target-version = ['py39']
 include = '\.pyi?$'
 extend-exclude = '''
 # A regex preceded by # is ignored
@@ -52,6 +52,7 @@ extend-exclude = '''
   | \.venv
   | build
   | dist
+  | __pycache__
 )/
 '''
 
