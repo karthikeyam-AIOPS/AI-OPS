@@ -51,6 +51,28 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Allure reports
+allure-results/
+allure-report/
+allure_report/
+
+# SonarQube
+.sonar/
+.scannerwork/
+sonar-project.properties.bak
+
+# Test results
+test-results.xml
+test-result.xml
+junit.xml
+
+# Quality reports
+flake8-report.txt
+pylint-report.txt
+bandit-report.json
+safety-report.json
+mypy-report.txt
+
 # Translations
 *.mo
 *.pot

@@ -28,9 +28,12 @@ examples = [
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
+    "pytest-html>=3.2.0",
+    "allure-pytest>=2.13.0",
     "black>=23.0.0",
     "isort>=5.12.0",
-    "flake8>=6.0.0"
+    "flake8>=6.0.0",
+    "sonar-scanner>=1.0.0"
 ]
 
 [project.scripts]
@@ -73,11 +76,17 @@ src_paths = ["ai_ops", "tests"]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q --strict-markers"
+addopts = "-ra -q --strict-markers --cov=ai_ops --cov-report=xml --cov-report=html --alluredir=allure-results"
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "smoke: Smoke tests",
+    "performance: Performance tests"
+]
 
 [tool.coverage.run]
 source = ["ai_ops"]

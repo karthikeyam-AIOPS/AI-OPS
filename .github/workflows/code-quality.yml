@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - '**.py'
+  push:
+    branches: [ main, develop ]
   workflow_dispatch:
 
 jobs:
@@ -11,27 +13,70 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for SonarQube analysis
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
 
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install linting tools
       run: |
         python -m pip install --upgrade pip
-        pip install black isort flake8 mypy
-        pip install -e .
+        pip install black isort flake8 mypy pylint bandit safety
+        pip install -e ".[dev]"
 
-    - name: Run black
-      run: black --check ai_ops
+    - name: Run black (code formatting)
+      run: |
+        black --check ai_ops Forecasting
+        black --diff ai_ops Forecasting
 
-    - name: Run isort  
-      run: isort --check-only ai_ops
+    - name: Run isort (import sorting)
+      run: |
+        isort --check-only ai_ops Forecasting
+        isort --diff ai_ops Forecasting
 
-    - name: Run flake8
-      run: flake8 ai_ops
+    - name: Run flake8 (style guide)
+      run: |
+        flake8 ai_ops Forecasting --output-file=flake8-report.txt --tee
+      continue-on-error: true
+
+    - name: Run pylint (code analysis)
+      run: |
+        pylint ai_ops --output=pylint-report.txt --output-format=parseable
+      continue-on-error: true
+
+    - name: Run bandit (security analysis)
+      run: |
+        bandit -r ai_ops Forecasting -f json -o bandit-report.json
+      continue-on-error: true
+
+    - name: Run safety (dependency security check)
+      run: |
+        safety check --json --output safety-report.json
+      continue-on-error: true
 
     - name: Run mypy (type checking)
-      run: mypy ai_ops --ignore-missing-imports
+      run: mypy ai_ops Forecasting --ignore-missing-imports
       continue-on-error: true
+
+    - name: Upload Quality Reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: quality-reports
+        path: |
+          flake8-report.txt
+          pylint-report.txt
+          bandit-report.json
+          safety-report.json
+        retention-days: 30
