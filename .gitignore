@@ -65,6 +65,7 @@ sonar-project.properties.bak
 test-results.xml
 test-result.xml
 junit.xml
+pytest-report.html
 
 # Quality reports
 flake8-report.txt
@@ -72,6 +73,15 @@ pylint-report.txt
 bandit-report.json
 safety-report.json
 mypy-report.txt
+
+# Model files (from forecasting examples)
+*.pkl
+*.joblib
+model_metadata.json
+
+# Temporary files
+*.tmp
+*.temp
 
 # Translations
 *.mo

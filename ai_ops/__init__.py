@@ -29,3 +29,12 @@ __description__ = (
 
 # Package metadata
 __all__ = ["__version__", "__author__", "__description__"]
+
+# Make main CLI available
+try:
+    from . import main
+    __all__.append("main")
+except ImportError:
+    # CLI dependencies not available
+    pass
+__all__ = ["__version__", "__author__", "__description__"]

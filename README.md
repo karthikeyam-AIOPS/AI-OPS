@@ -1,5 +1,8 @@
 # AI-OPS Toolkit 🚀
 
+[![Basic CI](https://github.com/karthikeyam-AIOPS/AI-OPS/actions/workflows/basic-ci.yml/badge.svg)](https://github.com/karthikeyam-AIOPS/AI-OPS/actions/workflows/basic-ci.yml)
+[![Code Quality](https://github.com/karthikeyam-AIOPS/AI-OPS/actions/workflows/code-quality.yml/badge.svg)](https://github.com/karthikeyam-AIOPS/AI-OPS/actions/workflows/code-quality.yml)
+
 A modular, AI-driven framework for infrastructure management, anomaly detection, and automated remediation. This tool is designed to move our operations toward an **AI-Native** standard.
 
     AI-OPS/
@@ -24,19 +27,36 @@ A modular, AI-driven framework for infrastructure management, anomaly detection,
 ## 🛠 Installation
 
 Clone the repository:
-       ```bash
-	   
-     git clone [https://github.com/karthikeyam-AIOPS/AI-OPS.git](https://github.com/karthikeyam-AIOPS/AI-OPS.git)
-     
-	   cd AI-OPS
-	   
-     #Packaage Installation
-	   
-     pip install -e .
-	   
-     #Verify Installation
-	   
-     aiops --help```
+```bash
+git clone https://github.com/karthikeyam-AIOPS/AI-OPS.git
+cd AI-OPS
+
+# Package Installation
+pip install -e .
+
+# Install with development dependencies (for testing and reporting)
+pip install -e ".[dev]"
+
+# Verify Installation
+aiops --help
+aiops status
+```
+
+## 🚀 Quick Start
+
+```bash
+# Check system status
+aiops status
+
+# Run examples
+aiops examples
+aiops forecast
+
+# Run tests
+aiops test
+# OR
+python scripts/run_tests.py
+```
 
 ## 📚 Examples & Demos
 

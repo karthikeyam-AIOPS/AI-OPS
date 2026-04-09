@@ -1,0 +1,27 @@
+# Core AI-OPS Dependencies
+# These are the minimum required packages for basic functionality
+
+# CLI framework
+typer>=0.9.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.21.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+
+# Model persistence
+joblib>=1.3.0
+
+# Terminal output formatting
+rich>=13.0.0
+
+# Optional: AWS integration (commented out by default)
+# boto3>=1.28.0
+
+# Optional: Forecasting (commented out by default) 
+# prophet>=1.1.0
+
+# Optional: Network analysis (commented out by default)
+# networkx>=3.0
