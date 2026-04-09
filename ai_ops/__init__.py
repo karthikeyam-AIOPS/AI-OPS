@@ -37,3 +37,4 @@ try:
 except ImportError:
     # CLI dependencies not available
     pass
+

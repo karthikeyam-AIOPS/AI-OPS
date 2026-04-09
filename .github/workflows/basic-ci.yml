@@ -1,14 +1,39 @@
-name: Basic CI (DISABLED)
-
-# DISABLED - Temporarily disabled due to Black formatting issues
-# Will be re-enabled once formatting issues are resolved
+name: Basic CI
 
 on:
-  workflow_dispatch:  # Manual trigger only
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  placeholder:
+  test:
     runs-on: ubuntu-latest
+    
     steps:
-    - name: Placeholder
-      run: echo "Basic CI is temporarily disabled"
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Test basic functionality
+      run: |
+        echo "✅ Python setup complete"
+        python --version
+        python -c "print('✅ Python is working')"
+
+    - name: Install Black formatter
+      run: pip install black
+
+    - name: Check code formatting with Black
+      run: black --check --diff .
+
+    - name: Run basic validation
+      run: |
+        python -c "
+assert 2 + 2 == 4
+assert 'hello'.upper() == 'HELLO'
+print('✅ Basic validation passed')
+        "
