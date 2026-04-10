@@ -38,8 +38,6 @@ jobs:
 
     - name: Run basic validation
       run: |
-        python -c "
-assert 2 + 2 == 4
-assert 'hello'.upper() == 'HELLO'
-print('✅ Basic validation passed')
-        "
+        python -c "assert 2 + 2 == 4"
+        python -c "assert 'hello'.upper() == 'HELLO'"
+        echo "Basic validation passed"
