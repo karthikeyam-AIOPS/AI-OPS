@@ -78,6 +78,12 @@ pip install -e ".[examples]"
 
 See [examples/README.md](examples/README.md) for detailed documentation.
 
+## 🤖 RAG API
+
+The `ai_ops/ragapi.py` module provides a production-ready FastAPI service with sentiment analysis, image classification, RAG question answering, Redis caching, and Docker support.
+
+See [ai_ops/README.md](ai_ops/README.md) for full documentation and usage.
+
 ## 🤝 Contributing
 
 1. Create a feature branch: git checkout -b feature/your-feature-name
