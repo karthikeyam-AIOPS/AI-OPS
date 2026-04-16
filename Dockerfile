@@ -23,7 +23,8 @@ COPY --from=builder /install /usr/local
 COPY ai_ops/ ./ai_ops/
 
 # Non-root user for security
-RUN useradd --no-create-home --shell /bin/false appuser
+RUN useradd --no-create-home --shell /bin/false appuser \
+    && chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
