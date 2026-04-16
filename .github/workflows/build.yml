@@ -88,6 +88,32 @@ jobs:
         fail_ci_if_error: false
       continue-on-error: true
 
+    - name: Write job summary
+      if: always()
+      run: |
+        echo "## CI — Build, Lint & Security Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Item | Detail |" >> $GITHUB_STEP_SUMMARY
+        echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Python version | $(python --version 2>&1) |" >> $GITHUB_STEP_SUMMARY
+        echo "| Branch | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Triggered by | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Commit | ${{ github.sha }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -f coverage.xml ]; then
+          echo "### Test Results" >> $GITHUB_STEP_SUMMARY
+          TOTAL=$(grep -oP 'tests="\K[0-9]+' test-results.xml 2>/dev/null | head -1)
+          FAILED=$(grep -oP 'failures="\K[0-9]+' test-results.xml 2>/dev/null | head -1)
+          ERRORS=$(grep -oP 'errors="\K[0-9]+' test-results.xml 2>/dev/null | head -1)
+          PASSED=$(( ${TOTAL:-0} - ${FAILED:-0} - ${ERRORS:-0} ))
+          echo "| Status | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed  | $PASSED |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed  | ${FAILED:-0} |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚠️ Errors  | ${ERRORS:-0} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📋 Total   | ${TOTAL:-0} |" >> $GITHUB_STEP_SUMMARY
+        fi
+
   security-scan:
     runs-on: ubuntu-latest
     steps:

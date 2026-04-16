@@ -26,7 +26,7 @@ jobs:
         
     - name: Run tests with coverage
       run: |
-        pytest tests/test_simple.py --cov=ai_ops --cov-report=xml --cov-report=html --cov-report=term-missing --html=test-report.html --self-contained-html -v
+        pytest tests/test_simple.py --cov=ai_ops --cov-report=xml --cov-report=html --cov-report=term-missing --html=test-report.html --self-contained-html --junitxml=test-results.xml -v
         
     - name: Generate coverage badge
       run: |
@@ -52,9 +52,33 @@ jobs:
           .coverage
           test-report.html
           
-    - name: Coverage comment
+    - name: Write job summary
+      if: always()
       run: |
-        echo "## Test Coverage Report" >> $GITHUB_STEP_SUMMARY
+        echo "## CI — Tests & Coverage Reports Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Item | Detail |" >> $GITHUB_STEP_SUMMARY
+        echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Python version | $(python --version 2>&1) |" >> $GITHUB_STEP_SUMMARY
+        echo "| Branch | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Triggered by | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Commit | ${{ github.sha }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -f test-results.xml ]; then
+          TOTAL=$(grep -oP 'tests="\K[0-9]+' test-results.xml | head -1)
+          FAILED=$(grep -oP 'failures="\K[0-9]+' test-results.xml | head -1)
+          ERRORS=$(grep -oP 'errors="\K[0-9]+' test-results.xml | head -1)
+          PASSED=$(( TOTAL - FAILED - ERRORS ))
+          echo "### Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed  | $PASSED |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed  | $FAILED |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚠️ Errors  | $ERRORS |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📋 Total   | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Coverage Report" >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-        coverage report >> $GITHUB_STEP_SUMMARY
+        coverage report --show-missing >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Coverage data not available" >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
