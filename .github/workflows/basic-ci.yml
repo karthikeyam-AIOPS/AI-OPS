@@ -1,4 +1,4 @@
-name: Basic CI
+name: CI — Quick Smoke Tests
 
 on:
   push:

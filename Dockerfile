@@ -24,8 +24,16 @@ COPY ai_ops/ ./ai_ops/
 
 # Non-root user for security
 RUN useradd --no-create-home --shell /bin/false appuser \
+    && mkdir -p /app/.cache/huggingface \
     && chown -R appuser:appuser /app
 USER appuser
+
+# Redirect Hugging Face and Transformers cache to a writable path.
+# /home/appuser does not exist (--no-create-home), so the default
+# ~/.cache/huggingface would cause a PermissionError at model download time.
+ENV HF_HOME=/app/.cache/huggingface \
+    TRANSFORMERS_CACHE=/app/.cache/huggingface \
+    HF_DATASETS_CACHE=/app/.cache/huggingface/datasets
 
 EXPOSE 8000
 

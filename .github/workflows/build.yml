@@ -1,4 +1,4 @@
-name: Build and Test AI-OPS
+name: CI — Build, Lint & Security
 
 on:
   push:
