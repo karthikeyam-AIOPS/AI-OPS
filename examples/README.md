@@ -1,8 +1,6 @@
-# AI-OPS Examples
+# examples
 
-This directory contains practical machine learning examples and demonstrations for the AI-OPS toolkit. Each example showcases different approaches to applying AI and ML in operations and system management contexts.
-
-## 📁 Available Examples
+See the project [README.md](../README.md) for full documentation.
 
 ### 1. Anomaly Detection Demo (`anomaly_detection_demo.py`)
 
@@ -113,6 +111,47 @@ Forecast for June 1st, 2026: 254.12 GB
 ```
 
 **Requirements**: `pip install scikit-learn joblib pandas numpy`
+
+### 5. RAG API — Colab Demo (`ragapi_colab_demo.py`)
+
+**Purpose**: Full RAG API server (FastAPI + SQLite + Redis + ChromaDB) written as a Colab-friendly Python script.
+
+**Key Features**:
+- Sentiment analysis (`/predict`, `/ask`) via DistilBERT
+- Token-by-token streaming endpoint (`/stream-ai`)
+- Image classification (`/classify`) via ViT with SHA-256 cache
+- Retrieval-Augmented Generation (`/ask-rag`) using GPT-2 + ChromaDB
+- Three-tier look-aside cache: Redis → SQLite → model
+- Rate limiting (5 req/min) on the RAG endpoint
+- All credentials loaded from Colab Secrets / environment variables
+
+**Required secrets** (`NGROK_AUTH_TOKEN`):
+```bash
+export NGROK_AUTH_TOKEN=<token>   # https://dashboard.ngrok.com
+```
+
+**Requirements**: `pip install fastapi uvicorn pyngrok nest_asyncio transformers torch sqlalchemy redis pillow chromadb slowapi`
+
+### 6. AI Agent vs Agentic AI (`ai_agent_vs_agentic_ai.py`)
+
+**Purpose**: Side-by-side demonstration of a simple reactive AI Agent versus an autonomous Agentic AI system using LangGraph.
+
+**Key Features**:
+- **Part 1** — Simple AI Agent: single-shot Ollama/Llama 3.2 sentiment call
+- **Part 2** — Agentic AI (Ollama): LangGraph Analyzer → Critic retry loop
+- **Part 3** — Agentic AI (GPT-4o): full 10-annotation agentic architecture
+- **Part 4 & 5** — DeepEval evaluations: infrastructure + movie review domains
+- All credentials loaded via `_get_secret()` (Colab Secrets → env var)
+
+**Required secrets**:
+```bash
+export NGROK_AUTH_TOKEN=<token>   # https://dashboard.ngrok.com
+export OPENAI_API_KEY=<key>       # https://platform.openai.com/api-keys
+```
+
+**Requirements**: `pip install fastapi uvicorn pyngrok langchain-ollama langchain-openai langgraph deepeval`
+
+**Notebook version**: [`AI_Agent_Vs_Agentic_AI.ipynb`](AI_Agent_Vs_Agentic_AI.ipynb)
 
 ## 🚀 Running the Examples
 

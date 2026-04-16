@@ -1,8 +1,6 @@
-# RAG API
+# ai_ops
 
-A FastAPI application that exposes AI-powered endpoints for sentiment analysis, image classification, and Retrieval-Augmented Generation (RAG). Backed by SQLite persistence, Redis caching, and a ChromaDB vector store.
-
-## Endpoints
+See the project [README.md](../README.md) for full documentation.
 
 | Method | Path | Description |
 |--------|------|-------------|

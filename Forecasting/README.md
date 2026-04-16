@@ -1,8 +1,6 @@
-# Forecasting Module
+# Forecasting
 
-This module contains predictive forecasting capabilities for AI-OPS operations.
-
-## 📊 Components
+See the project [README.md](../README.md) for full documentation.
 
 ### Core Forecasting
 - **[capacity_forecasting_demo.py](capacity_forecasting_demo.py)** - Complete capacity forecasting implementation with linear regression

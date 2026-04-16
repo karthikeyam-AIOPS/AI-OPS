@@ -1,8 +1,6 @@
-# AI-OPS Tests
+# tests
 
-This directory contains the test suite for the AI-OPS toolkit with comprehensive Allure reporting.
-
-## 🧪 Test Structure
+See the project [README.md](../README.md) for full documentation.
 
 ### Test Categories
 - **Unit Tests** (`@pytest.mark.unit`): Test individual components and functions

@@ -10,28 +10,64 @@ readme = "README.md"
 requires-python = ">=3.9"
 authors = [{ name = "Karthikeya Raja M" }]
 dependencies = [
-    "typer>=0.9.0",      # For the CLI interface
-    "pandas>=2.0.0",     # For data processing
-    "scikit-learn>=1.3.0", # For #1 Anomaly Detection
-    "joblib>=1.3.0",     # For model persistence and serialization
-    "rich>=13.0.0"       # For professional terminal output
+    "typer>=0.9.0",        # CLI interface
+    "pandas>=2.0.0",       # Data processing
+    "numpy>=1.21.0",       # Numerical computing
+    "scikit-learn>=1.3.0", # Anomaly detection / forecasting
+    "joblib>=1.3.0",       # Model persistence
+    "rich>=13.0.0"         # Terminal output formatting
 ]
 
 [project.optional-dependencies]
 examples = [
-    "matplotlib>=3.5.0",  # For visualization in examples
-    "textblob>=0.17.0"    # For sentiment analysis demo
+    "matplotlib>=3.5.0",
+    "textblob>=0.17.0"
+]
+rag = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "pyngrok>=7.0.0",
+    "nest_asyncio>=1.5.0",
+    "python-multipart>=0.0.6",
+    "transformers>=4.30.0",
+    "torch>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "redis>=4.6.0",
+    "pillow>=10.0.0",
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+    "slowapi>=0.1.9"
+]
+agents = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "pyngrok>=7.0.0",
+    "nest_asyncio>=1.5.0",
+    "langchain-ollama>=0.1.0",
+    "langchain-openai>=0.1.0",
+    "langgraph>=0.1.0",
+    "deepeval>=0.21.0"
 ]
 dev = [
     "pytest>=7.0.0",
-    "pytest-cov>=4.0.0"
+    "pytest-cov>=4.0.0",
+    "pytest-html>=3.2.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "bandit>=1.7.0",
+    "safety>=2.3.0"
+]
+all = [
+    "ai-ops[examples,rag,agents,dev]"
 ]
 
-# [project.scripts]
-# aiops = "ai_ops.main:app"
+[project.scripts]
+aiops = "ai_ops.main:main"
 
 [tool.setuptools]
-packages = ["ai_ops"]
+packages = ["ai_ops", "Forecasting"]
 
 [tool.setuptools.package-dir]
 "" = "."
@@ -77,6 +113,8 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "unit: marks tests as unit tests",
     "integration: marks tests as integration tests",
+    "smoke: marks tests as smoke tests for critical path verification",
+    "performance: marks tests as performance benchmarks",
 ]
 
 [tool.coverage.run]
@@ -120,9 +158,25 @@ strict_equality = true
 module = [
     "pandas.*",
     "sklearn.*",
-    "prophet.*", 
+    "prophet.*",
     "networkx.*",
     "boto3.*",
-    "botocore.*"
+    "botocore.*",
+    "fastapi.*",
+    "uvicorn.*",
+    "pyngrok.*",
+    "nest_asyncio.*",
+    "transformers.*",
+    "torch.*",
+    "sqlalchemy.*",
+    "redis.*",
+    "PIL.*",
+    "chromadb.*",
+    "slowapi.*",
+    "langchain_ollama.*",
+    "langchain_openai.*",
+    "langgraph.*",
+    "deepeval.*",
+    "google.colab.*"
 ]
 ignore_missing_imports = true

@@ -1,8 +1,6 @@
-# AI-OPS Scripts
+# scripts
 
-Utility scripts for managing AI-OPS development, testing, and reporting.
-
-## 📜 Available Scripts
+See the project [README.md](../README.md) for full documentation.
 
 ### [run_tests.py](run_tests.py)
 
